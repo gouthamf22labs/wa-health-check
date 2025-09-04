@@ -1,0 +1,24 @@
+{
+    "name": "wa-send-be-ping-script",
+    "version": "1.0.0",
+    "description": "Health monitor script for WhatsApp API with Slack notifications",
+    "main": "health-monitor.js",
+    "scripts": {
+        "start": "node health-monitor.js",
+        "monitor": "node health-monitor.js"
+    },
+    "keywords": [
+        "health-check",
+        "monitoring",
+        "slack",
+        "whatsapp-api"
+    ],
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "dependencies": {
+        "dotenv": "^16.3.1"
+    },
+    "author": "",
+    "license": "MIT"
+}
