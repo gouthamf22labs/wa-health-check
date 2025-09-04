@@ -87,7 +87,7 @@ The script uses environment variables for configuration. Create a `.env` file wi
 3. **If status is not 200 or network error:**
    - Sends detailed Slack alert
    - Triggers auto-deployment
-   - Waits 1 minute for deployment
+   - Waits 2 minutes for deployment
    - Checks health again
    - If still failing, sends deployment failure notification
 

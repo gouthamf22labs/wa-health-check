@@ -105,12 +105,12 @@ async function handleFailure(
   // Trigger deployment
   await triggerDeployment();
 
-  // Wait 1 minute before checking again
-  console.log("⏳ Waiting 1 minute for deployment to complete...");
+  // Wait 2 minutes before checking again
+  console.log("⏳ Waiting 2 minutes for deployment to complete...");
   setTimeout(async () => {
     console.log("🔍 Checking health after deployment...");
     await pingHealthCheck();
-  }, 60000); // 60 seconds
+  }, 120000); // 120 seconds
 }
 
 async function triggerDeployment() {
@@ -118,10 +118,9 @@ async function triggerDeployment() {
     console.log(` Calling deployment URL: ${DEPLOYMENT_URL}`);
 
     const deployResponse = await fetch(DEPLOYMENT_URL, {
-      method: "POST",
+      method: "GET",
       headers: {
         "User-Agent": "WhatsApp-Health-Monitor/1.0",
-        "Content-Type": "application/json",
       },
       timeout: 30000, // 30 second timeout for deployment
     });
