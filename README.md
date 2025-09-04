@@ -17,23 +17,29 @@ A Node.js script that monitors your WhatsApp API health check endpoint and sends
 ## Setup
 
 1. **Check Node.js version:**
+
    ```bash
    node --version
    ```
+
    Make sure you have Node.js 18+ installed.
 
 2. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
 3. **Configure environment variables:**
+
    ```bash
    cp .env.example .env
    ```
-   
+
    Edit `.env` file with your actual values:
+
    ```env
+   ENV=stage
    HEALTH_CHECK_URL=https://your-api-domain.com/health-check
    SLACK_WEBHOOK_URL=https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK
    DEPLOYMENT_URL=https://your-deployment-server.com/api/deploy/your-deployment-id
@@ -42,16 +48,19 @@ A Node.js script that monitors your WhatsApp API health check endpoint and sends
 ## Usage
 
 ### Start the monitor:
+
 ```bash
 node health-monitor.js
 ```
 
 Or using npm script:
+
 ```bash
 npm start
 ```
 
 ### Stop the monitor:
+
 Press `Ctrl+C` to gracefully stop the monitoring.
 
 ## Configuration
@@ -64,17 +73,18 @@ The script uses environment variables for configuration. Create a `.env` file wi
 
 ### Environment Variables
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `HEALTH_CHECK_URL` | Health check endpoint to monitor | `https://api.example.com/health` |
-| `SLACK_WEBHOOK_URL` | Slack webhook for notifications | `https://hooks.slack.com/services/...` |
-| `DEPLOYMENT_URL` | Deployment trigger endpoint | `https://deploy.example.com/api/deploy/...` |
+| Variable            | Description                               | Example                                     |
+| ------------------- | ----------------------------------------- | ------------------------------------------- |
+| `ENV`               | Environment identifier (stage, prod, dev) | `stage`                                     |
+| `HEALTH_CHECK_URL`  | Health check endpoint to monitor          | `https://api.example.com/health`            |
+| `SLACK_WEBHOOK_URL` | Slack webhook for notifications           | `https://hooks.slack.com/services/...`      |
+| `DEPLOYMENT_URL`    | Deployment trigger endpoint               | `https://deploy.example.com/api/deploy/...` |
 
 ## What happens:
 
 1. **Every 30 seconds** the script pings your health check endpoint
 2. **If status is 200:** Logs success to console only: `✅ Health check successful: 200`
-3. **If status is not 200 or network error:** 
+3. **If status is not 200 or network error:**
    - Sends detailed Slack alert
    - Triggers auto-deployment
    - Waits 1 minute for deployment
@@ -84,11 +94,13 @@ The script uses environment variables for configuration. Create a `.env` file wi
 ## �� Sample Slack Alert:
 
 ### 🚨 Failure Alert:
+
 ```
-🚨 WhatsApp API Health Check FAILED
+🚨 WhatsApp API Health Check FAILED [STAGE]
 
 Endpoint: https://sendlater-for-whatsapp-api.nhs9sl.easypanel.host/health-check
 Method: GET
+Environment: STAGE
 Status Code: 500 Internal Server Error
 Time: 2024-01-15T10:30:30.000Z
 
@@ -98,13 +110,19 @@ Accept: application/json, text/plain, */*
 
 Response Body:
 ```
+
 {"error": "Database connection failed"}
+
 ```
 
 Response Headers:
 content-type: application/json
 content-length: 38
 ```
+
+🚀 Auto-deployment will be triggered
+
+````
 
 ## Running in Production
 
@@ -122,13 +140,15 @@ pm2 logs whatsapp-health-monitor
 
 # Stop
 pm2 stop whatsapp-health-monitor
-```
+````
 
 ## Sample Output
 
 ```
 🔍 WhatsApp API Health Monitor Starting...
+🌍 Environment: STAGE
 📍 Monitoring: https://sendlater-for-whatsapp-api.nhs9sl.easypanel.host/health-check
+🚀 Auto-deployment URL: https://deploy.example.com/api/deploy/...
 ⏰ Check interval: Every 30 seconds
 📢 Slack alerts enabled for failures and deployment status
 ──────────────────────────────────────────────────
@@ -137,4 +157,4 @@ pm2 stop whatsapp-health-monitor
 [2024-01-15T10:30:30.000Z] Checking health endpoint...
 ❌ Health check failed: 500 Internal Server Error
 📨 Slack alert sent successfully
-``` 
+```

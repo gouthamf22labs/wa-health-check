@@ -4,6 +4,7 @@ require("dotenv").config();
 const HEALTH_CHECK_URL = process.env.HEALTH_CHECK_URL;
 const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
 const DEPLOYMENT_URL = process.env.DEPLOYMENT_URL;
+const ENV = process.env.ENV || "dev";
 
 // Validate required environment variables
 if (!HEALTH_CHECK_URL || !SLACK_WEBHOOK_URL || !DEPLOYMENT_URL) {
@@ -148,10 +149,11 @@ async function sendDeploymentFailureNotification(
   let messageText;
 
   if (error) {
-    messageText = `🚨 *WhatsApp API Still Down After Deployment*
+    messageText = `🚨 *WhatsApp API Still Down After Deployment* [${ENV.toUpperCase()}]
 
 *Endpoint:* ${requestDetails.url}
 *Method:* ${requestDetails.method}
+*Environment:* ${ENV.toUpperCase()}
 *Time:* ${timestamp}
 *Status:* Deployment attempted but service still failing
 *Error:* Network/Connection Error
@@ -163,10 +165,11 @@ ${responseBody}
 
 ⚠️ *Action Required:* Manual intervention may be needed.`;
   } else {
-    messageText = `🚨 *WhatsApp API Still Down After Deployment*
+    messageText = `🚨 *WhatsApp API Still Down After Deployment* [${ENV.toUpperCase()}]
 
 *Endpoint:* ${requestDetails.url}
 *Method:* ${requestDetails.method}
+*Environment:* ${ENV.toUpperCase()}
 *Status Code:* ${response.status} ${response.statusText}
 *Time:* ${timestamp}
 *Status:* Deployment attempted but service still failing
@@ -240,10 +243,11 @@ async function sendSlackReport(
 
   if (error) {
     // Network error case
-    messageText = `${statusEmoji} *WhatsApp API Health Check ${statusText}*
+    messageText = `${statusEmoji} *WhatsApp API Health Check ${statusText}* [${ENV.toUpperCase()}]
 
 *Endpoint:* ${requestDetails.url}
 *Method:* ${requestDetails.method}
+*Environment:* ${ENV.toUpperCase()}
 *Time:* ${timestamp}
 *Error:* Network/Connection Error
 
@@ -257,10 +261,11 @@ ${responseBody}
 🚀 *Auto-deployment will be triggered*`;
   } else {
     // Normal response case
-    messageText = `${statusEmoji} *WhatsApp API Health Check ${statusText}*
+    messageText = `${statusEmoji} *WhatsApp API Health Check ${statusText}* [${ENV.toUpperCase()}]
 
 *Endpoint:* ${requestDetails.url}
 *Method:* ${requestDetails.method}
+*Environment:* ${ENV.toUpperCase()}
 *Status Code:* ${response.status} ${response.statusText}
 *Time:* ${timestamp}
 
@@ -319,6 +324,7 @@ process.on("SIGTERM", () => {
 
 // Start monitoring
 console.log("🔍 WhatsApp API Health Monitor Starting...");
+console.log(`🌍 Environment: ${ENV.toUpperCase()}`);
 console.log(`📍 Monitoring: ${HEALTH_CHECK_URL}`);
 console.log(`🚀 Auto-deployment URL: ${DEPLOYMENT_URL}`);
 console.log("⏰ Check interval: Every 30 seconds");
