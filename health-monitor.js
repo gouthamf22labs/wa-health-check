@@ -110,6 +110,10 @@ async function handleFailure(
   setTimeout(async () => {
     console.log("🔍 Checking health after deployment...");
     await pingHealthCheck();
+
+    // Resume regular 30-second monitoring routine
+    console.log("🔄 Resuming regular 30-second monitoring routine...");
+    isDeploying = false;
   }, 120000); // 120 seconds
 }
 

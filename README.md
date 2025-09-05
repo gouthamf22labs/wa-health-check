@@ -90,6 +90,7 @@ The script uses environment variables for configuration. Create a `.env` file wi
    - Waits 2 minutes for deployment
    - Checks health again
    - If still failing, sends deployment failure notification
+   - Resumes regular 30-second monitoring routine
 
 ## �� Sample Slack Alert:
 
